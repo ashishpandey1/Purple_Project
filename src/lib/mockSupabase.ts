@@ -57,7 +57,7 @@ class MockQueryBuilder<T> {
   }
 
   then<TResult>(
-    onfulfilled?: (value: { data: T[] | null; error: any }) => TResult | PromiseLike<TResult>,
+    onfulfilled?: (value: { data: T | T[] | null; error: any }) => TResult | PromiseLike<TResult>,
     onrejected?: (reason: any) => TResult | PromiseLike<TResult>
   ): Promise<TResult> {
     return this.execute().then(onfulfilled, onrejected) as Promise<TResult>
