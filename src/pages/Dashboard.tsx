@@ -81,7 +81,7 @@ export function Dashboard() {
       .insert({
         user_id: user.id,
         amount,
-        currency: 'USD',
+        currency: 'INR',
         status: 'pending' as const,
         provider: 'mock',
         qr_code_data: mockQrData,
@@ -110,14 +110,14 @@ export function Dashboard() {
           <p style={{ color: 'var(--color-text-muted)', marginTop: '0.25rem' }}>Welcome back, {user?.user_metadata?.full_name || user?.email}</p>
         </div>
         <div style={{ display: 'flex', gap: '0.75rem' }}>
-          <button className="btn btn-primary" onClick={() => handleCreatePayment(10)} disabled={creating}>
-            $10 Payment
+          <button className="btn btn-primary" onClick={() => handleCreatePayment(100)} disabled={creating}>
+            ₹100 Payment
           </button>
-          <button className="btn btn-primary" onClick={() => handleCreatePayment(25)} disabled={creating}>
-            $25 Payment
+          <button className="btn btn-primary" onClick={() => handleCreatePayment(250)} disabled={creating}>
+            ₹250 Payment
           </button>
-          <button className="btn btn-primary" onClick={() => handleCreatePayment(50)} disabled={creating}>
-            $50 Payment
+          <button className="btn btn-primary" onClick={() => handleCreatePayment(500)} disabled={creating}>
+            ₹500 Payment
           </button>
         </div>
       </div>
@@ -130,7 +130,7 @@ export function Dashboard() {
           {transactions.length === 0 ? (
             <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--color-text-muted)' }}>
               <p style={{ marginBottom: '1rem' }}>No transactions yet</p>
-              <Link to="/dashboard" className="btn btn-primary" onClick={() => handleCreatePayment(10)}>
+              <Link to="/dashboard" className="btn btn-primary" onClick={() => handleCreatePayment(100)}>
                 Create Your First Payment
               </Link>
             </div>
@@ -153,7 +153,7 @@ export function Dashboard() {
                         {new Date(tx.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
                       </td>
                       <td style={{ padding: '1rem 1.5rem', fontSize: '0.875rem', fontWeight: 500 }}>
-                        ${tx.amount.toFixed(2)} {tx.currency}
+                        ₹{tx.amount.toFixed(2)} {tx.currency}
                       </td>
                       <td style={{ padding: '1rem 1.5rem' }}>
                         <span className={`badge badge-${tx.status}`}>{tx.status}</span>

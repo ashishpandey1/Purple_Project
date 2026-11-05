@@ -150,13 +150,13 @@ export const createMockClient = () => {
 
       // Auto-seed test transactions for new user
       const statuses: Transaction['status'][] = ['completed', 'pending', 'failed', 'completed']
-      const amounts = [10, 25, 50, 15]
+      const amounts = [100, 250, 500, 150]
       for (let i = 0; i < 4; i++) {
         const tx: Transaction = {
           id: genId(),
           user_id: user.id,
           amount: amounts[i],
-          currency: 'USD',
+          currency: 'INR',
           status: statuses[i],
           provider: 'mock',
           provider_transaction_id: `txn_${genId().slice(0, 8)}`,
@@ -187,13 +187,13 @@ export const createMockClient = () => {
       // Auto-seed test data for this user if not already seeded
       if (mockTransactions.size === 0 || !Array.from(mockTransactions.values()).some(t => t.user_id === user.id)) {
         const statuses: Transaction['status'][] = ['completed', 'pending', 'failed', 'completed']
-        const amounts = [10, 25, 50, 15]
+        const amounts = [100, 250, 500, 150]
         for (let i = 0; i < 4; i++) {
           const tx: Transaction = {
             id: genId(),
             user_id: user.id,
             amount: amounts[i],
-            currency: 'USD',
+            currency: 'INR',
             status: statuses[i],
             provider: 'mock',
             provider_transaction_id: `txn_${genId().slice(0, 8)}`,
@@ -275,7 +275,7 @@ export const createMockClient = () => {
                 id: genId(),
                 user_id: data.user_id,
                 amount: data.amount,
-                currency: data.currency || 'USD',
+                currency: data.currency || 'INR',
                 status: data.status || 'pending',
                 provider: data.provider || 'mock',
                 provider_transaction_id: data.provider_transaction_id || null,
@@ -351,13 +351,13 @@ export const createMockClient = () => {
     // Helper to seed test data
     __seedTestData: async (userId: string) => {
       const statuses: Transaction['status'][] = ['completed', 'pending', 'failed', 'completed']
-      const amounts = [10, 25, 50, 15]
+      const amounts = [100, 250, 500, 150]
       for (let i = 0; i < 4; i++) {
         const tx: Transaction = {
           id: genId(),
           user_id: userId,
           amount: amounts[i],
-          currency: 'USD',
+          currency: 'INR',
           status: statuses[i],
           provider: 'mock',
           provider_transaction_id: `txn_${genId().slice(0, 8)}`,

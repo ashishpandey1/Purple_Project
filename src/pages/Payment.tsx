@@ -101,7 +101,7 @@ export function Payment() {
         <div className="card-body">
           <div className="qr-container">
             <div style={{ fontSize: '2rem', fontWeight: 700, color: 'var(--color-primary)', marginBottom: '0.5rem' }}>
-              ${transaction.amount.toFixed(2)} {transaction.currency}
+              ₹{transaction.amount.toFixed(2)} {transaction.currency}
             </div>
 
             {isPending && !isExpired && transaction.qr_code_data && (
@@ -141,7 +141,7 @@ export function Payment() {
                 <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>✅</div>
                 <h3 style={{ marginBottom: '0.5rem', color: 'var(--color-success)' }}>Payment Completed!</h3>
                 <p style={{ color: 'var(--color-text-muted)', marginBottom: '1.5rem' }}>
-                  Your payment of ${transaction.amount.toFixed(2)} was successfully processed.
+                  Your payment of ₹{transaction.amount.toFixed(2)} was successfully processed.
                 </p>
                 <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center' }}>
                   <Link to="/dashboard" className="btn btn-primary">Back to Dashboard</Link>
