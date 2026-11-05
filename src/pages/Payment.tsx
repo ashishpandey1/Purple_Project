@@ -104,23 +104,14 @@ export function Payment() {
               ₹{transaction.amount.toFixed(2)} {transaction.currency}
             </div>
 
-            {isPending && !isExpired && transaction.qr_code_data && (
-              <>
-                <div className="qr-code">
-                  <img
-                    src={transaction.qr_code_data}
-                    alt="Payment QR Code"
-                    style={{ width: '250px', height: '250px', display: 'block' }}
-                  />
-                </div>
-                <div className="timer" style={{ color: timeLeft < 60 ? 'var(--color-error)' : 'var(--color-primary)' }}>
-                  Expires in: {formatTime(timeLeft)}
-                </div>
-                <p style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem', textAlign: 'center', maxWidth: '300px' }}>
-                  Scan this QR code with your payment app to complete the transaction.
-                  This code expires in 5 minutes.
-                </p>
-              </>
+            {isPending && !isExpired && (
+              <div className="qr-code">
+                <img
+                  src="/qr-code.jpeg"
+                  alt="Payment QR Code"
+                  style={{ width: '250px', height: '250px', display: 'block' }}
+                />
+              </div>
             )}
 
             {isExpired && (
