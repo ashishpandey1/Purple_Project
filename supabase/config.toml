@@ -1,0 +1,35 @@
+# Supabase CLI Configuration
+# Run: supabase init (creates this file)
+
+project_id = "your-project-ref"
+api = {
+  enabled = true
+}
+auth = {
+  enabled = true
+  jwt_secret = "your-jwt-secret"
+  site_url = "https://your-project.supabase.co"
+  additional_redirect_urls = ["http://localhost:3000/**", "https://your-domain.com/**"]
+  external = {
+    google = { enabled = true, client_id = "your-google-client-id", secret = "your-google-secret" }
+    github = { enabled = true, client_id = "your-github-client-id", secret = "your-github-secret" }
+  }
+  email = {
+    enable_signup = true
+    double_confirm_changes = true
+    enable_confirmations = true
+  }
+}
+db = {
+  enabled = true
+  migrations = "supabase/migrations"
+}
+realtime = {
+  enabled = true
+}
+storage = {
+  enabled = true
+}
+edge_functions = {
+  enabled = true
+}
