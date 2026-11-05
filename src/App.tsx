@@ -7,6 +7,9 @@ import { Register } from './pages/Register'
 import { Dashboard } from './pages/Dashboard'
 import { Payment } from './pages/Payment'
 import { Profile } from './pages/Profile'
+import { Events } from './pages/Events'
+import { EventDetail } from './pages/EventDetail'
+import { BookingConfirm } from './pages/BookingConfirm'
 import { ProtectedRoute } from './components/ProtectedRoute'
 
 function AppRoutes() {
@@ -26,13 +29,16 @@ function AppRoutes() {
         <Route index element={<Home />} />
         <Route path="login" element={user ? <Navigate to="/dashboard" replace /> : <Login />} />
         <Route path="register" element={user ? <Navigate to="/dashboard" replace /> : <Register />} />
+        <Route path="events" element={<Events />} />
+        <Route path="events/:eventId" element={<EventDetail />} />
+        <Route path="booking/:bookingId" element={<BookingConfirm />} />
         <Route element={<ProtectedRoute />}>
           <Route path="dashboard/*" element={<Dashboard />} />
           <Route path="payment/:transactionId" element={<Payment />} />
           <Route path="profile" element={<Profile />} />
         </Route>
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
-      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   )
 }

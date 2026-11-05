@@ -7,7 +7,7 @@ export type Json =
   | boolean
   | null
   | { [key: string]: Json | undefined }
-  | Json[]
+  | Json[];
 
 export interface Database {
   public: {
@@ -83,6 +83,153 @@ export interface Database {
           created_at?: string
           updated_at?: string
           completed_at?: string | null
+        }
+      }
+      events: {
+        Row: {
+          id: string
+          title: string
+          description: string | null
+          image_url: string | null
+          event_date: string
+          event_end_time: string | null
+          venue: string | null
+          max_capacity: number
+          price: number
+          currency: string
+          status: 'upcoming' | 'ongoing' | 'completed' | 'cancelled'
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          title: string
+          description?: string | null
+          image_url?: string | null
+          event_date: string
+          event_end_time?: string | null
+          venue?: string | null
+          max_capacity?: number
+          price: number
+          currency?: string
+          status?: 'upcoming' | 'ongoing' | 'completed' | 'cancelled'
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          title?: string
+          description?: string | null
+          image_url?: string | null
+          event_date?: string
+          event_end_time?: string | null
+          venue?: string | null
+          max_capacity?: number
+          price?: number
+          currency?: string
+          status?: 'upcoming' | 'ongoing' | 'completed' | 'cancelled'
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      bookings: {
+        Row: {
+          id: string
+          user_id: string
+          event_id: string
+          quantity: number
+          total_amount: number
+          currency: string
+          status: 'pending' | 'confirmed' | 'cancelled' | 'expired'
+          qr_code_data: string | null
+          qr_expires_at: string | null
+          payment_mode: string | null
+          payment_status: 'pending' | 'completed' | 'failed' | 'refunded'
+          provider: string | null
+          provider_transaction_id: string | null
+          metadata: Json | null
+          created_at: string
+          updated_at: string
+          completed_at: string | null
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          event_id: string
+          quantity: number
+          total_amount: number
+          currency: string
+          status?: 'pending' | 'confirmed' | 'cancelled' | 'expired'
+          qr_code_data?: string | null
+          qr_expires_at?: string | null
+          payment_mode?: string | null
+          payment_status?: 'pending' | 'completed' | 'failed' | 'refunded'
+          provider?: string | null
+          provider_transaction_id?: string | null
+          metadata?: Json | null
+          created_at?: string
+          updated_at?: string
+          completed_at?: string | null
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          event_id?: string
+          quantity?: number
+          total_amount?: number
+          currency?: string
+          status?: 'pending' | 'confirmed' | 'cancelled' | 'expired'
+          qr_code_data?: string | null
+          qr_expires_at?: string | null
+          payment_mode?: string | null
+          payment_status?: 'pending' | 'completed' | 'failed' | 'refunded'
+          provider?: string | null
+          provider_transaction_id?: string | null
+          metadata?: Json | null
+          created_at?: string
+          updated_at?: string
+          completed_at?: string | null
+        }
+      }
+      tickets: {
+        Row: {
+          id: string
+          booking_id: string
+          event_id: string
+          user_id: string
+          ticket_number: string
+          qr_code_data: string
+          qr_expires_at: string
+          status: 'valid' | 'used' | 'expired' | 'cancelled'
+          used_at: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          booking_id: string
+          event_id: string
+          user_id: string
+          ticket_number: string
+          qr_code_data: string
+          qr_expires_at: string
+          status?: 'valid' | 'used' | 'expired' | 'cancelled'
+          used_at?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          booking_id?: string
+          event_id?: string
+          user_id?: string
+          ticket_number?: string
+          qr_code_data?: string
+          qr_expires_at?: string
+          status?: 'valid' | 'used' | 'expired' | 'cancelled'
+          used_at?: string | null
+          created_at?: string
+          updated_at?: string
         }
       }
     }
