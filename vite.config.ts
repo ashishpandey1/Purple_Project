@@ -4,7 +4,7 @@ import path from 'path'
 
 export default defineConfig({
   plugins: [react()],
-  base: '/project-purple/', // GitHub Pages repo name - update if different
+  base: '/', // GitHub Pages repo name - update if different
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
