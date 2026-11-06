@@ -137,18 +137,18 @@ export function Events() {
                 <div className="mt-4 space-y-2 text-sm">
                   <div className="flex items-center gap-2 text-muted-foreground">
                     <svg className="h-4 w-4 text-neon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <rect width="18" height="18" x="3" y="4" rx="2"></rect>
-                      <path d="M16 2v4"></path>
-                      <path d="M8 2v4"></path>
-                      <path d="M3 10h18"></path>
+                      <rect width="18" height="18" x="3" y="4" rx="2" />
+                      <path d="M16 2v4" />
+                      <path d="M8 2v4" />
+                      <path d="M3 10h18" />
                     </svg>
                     <span>{formatDate(event.event_date)}</span>
                   </div>
                   {event.venue && (
                     <div className="flex items-center gap-2 text-muted-foreground">
                       <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                        <circle cx="12" cy="10" r="3"></circle>
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                        <circle cx="12" cy="10" r="3" />
                       </svg>
                       <span>{event.venue}</span>
                     </div>
@@ -165,4 +165,26 @@ export function Events() {
       )}
     </div>
   )
+}
+
+const formatDate = (dateStr: string) => {
+  const date = new Date(dateStr)
+  return date.toLocaleDateString('en-IN', {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  })
+}
+
+const getStatusBadge = (status: string) => {
+  const styles: Record<string, string> = {
+    upcoming: 'bg-neon/20 text-neon border-neon/30',
+    ongoing: 'bg-violet/20 text-violet border-violet/30',
+    completed: 'bg-neon-soft/20 text-neon-soft border-neon-soft/30',
+    cancelled: 'bg-neon-red/20 text-neon-red border-neon-red/30'
+  }
+  return styles[status] || 'bg-muted-foreground/20 text-muted-foreground'
 }

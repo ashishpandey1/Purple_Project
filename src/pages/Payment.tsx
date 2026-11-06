@@ -6,10 +6,10 @@ import type { Database } from '@/types/database'
 type Transaction = Database['public']['Tables']['transactions']['Row']
 
 const PAYMENT_MODES = [
-  { id: 'upi' as const, label: 'UPI', icon: <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v4"></path><path d="M21 12H3"></path><path d="M12 20v4"></path><path d="M3 12h18"></path></svg> },
-  { id: 'card' as const, label: 'Card', icon: <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"></rect><path d="M16 14h-4"></path></svg> },
-  { id: 'wallet' as const, label: 'Wallet', icon: <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"></path><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"></path></svg> },
-  { id: 'netbanking' as const, label: 'Net Banking', icon: <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 14v4"></path><path d="M16 14h-4"></path><path d="M12 10v4"></path><path d="M8 14h4"></path><rect width="20" height="14" x="2" y="5" rx="2"></rect><path d="M6 9h14"></path></svg> },
+  { id: 'upi' as const, label: 'UPI', icon: <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v4" /><path d="M21 12H3" /><path d="M12 20v4" /><path d="M3 12h18" /></svg> },
+  { id: 'card' as const, label: 'Card', icon: <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="14" x="2" y="5" rx="2" /><line x1="2" x2="22" y1="10" y2="10" /></svg> },
+  { id: 'wallet' as const, label: 'Wallet', icon: <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1" /><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4" /></svg> },
+  { id: 'netbanking' as const, label: 'Net Banking', icon: <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 14v4" /><path d="M16 14h-4" /><path d="M12 10v4" /><path d="M8 14h4" /><rect width="20" height="14" x="2" y="5" rx="2" /><path d="M6 9h14" /></svg> },
 ] as const
 
 export function Payment() {
@@ -100,8 +100,8 @@ export function Payment() {
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="animate-breathe flex items-center gap-3">
             <svg className="h-8 w-8 text-neon animate-breathe" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="12" cy="12" r="10"></circle>
-              <path d="M12 6v6l4 2"></path>
+              <circle cx="12" cy="12" r="10" />
+              <path d="M12 6v6l4 2" />
             </svg>
             <span className="font-display text-lg font-bold text-foreground">Loading payment…</span>
           </div>
@@ -151,9 +151,9 @@ export function Payment() {
                 </div>
                 <div className="timer mb-6 flex items-center justify-center gap-2 text-lg font-display font-bold text-neon" style={{ color: timeLeft < 60 ? 'var(--neon-red)' : 'var(--neon)' }}>
                   <svg className="h-6 w-6 animate-breathe" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-                    <line x1="10" x2="14" y1="2" y2="2"></line>
-                    <line x1="12" x2="15" y1="14" y2="11"></line>
-                    <circle cx="12" cy="14" r="8"></circle>
+                    <line x1="10" x2="14" y1="2" y2="2" />
+                    <line x1="12" x2="15" y1="14" y2="11" />
+                    <circle cx="12" cy="14" r="8" />
                   </svg>
                   <span className="tabular-nums">Expires in: {formatTime}</span>
                 </div>
@@ -204,7 +204,7 @@ export function Payment() {
               <div className="mt-6 border-t border-glass-border pt-6">
                 <h3 className="font-display text-lg font-semibold text-foreground mb-4">Select Payment Mode</h3>
                 <div className="grid gap-3 sm:grid-cols-2">
-                  {paymentModes.map((mode) => (
+                  {PAYMENT_MODES.map((mode) => (
                     <button
                       key={mode.id}
                       onClick={() => handlePayment(mode.id)}
@@ -228,8 +228,8 @@ export function Payment() {
               <div className="mt-6 text-center">
                 <div className="animate-breathe flex items-center justify-center gap-3 text-neon mb-4">
                   <svg className="h-8 w-8 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <path d="M12 6v6l4 2"></path>
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M12 6v6l4 2" />
                   </svg>
                   <span className="font-display text-lg font-bold">Processing {paymentMode.toUpperCase()} payment…</span>
                 </div>
@@ -263,43 +263,3 @@ export function Payment() {
     </div>
   )
 }
-
-const PAYMENT_MODES = [
-  { id: 'upi' as const, label: 'UPI', icon: <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v4"></path><path d="M21 12H3"></path><path d="M12 20v4"></path><path d="M3 12h18"></path></svg> },
-  { id: 'card' as const, label: 'Card', icon: <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"></rect><path d="M16 14h-4"></path></svg> },
-  { id: 'wallet' as const, label: 'Wallet', icon: <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"></path><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"></path></svg> },
-  { id: 'netbanking' as const, label: 'Net Banking', icon: <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 14v4"></path><path d="M16 14h-4"></path><path d="M12 10v4"></path><path d="M8 14h4"></path><rect width="20" height="14" x="2" y="5" rx="2"></rect><path d="M6 9h14"></path></svg> },
-] as const
-
-const PAYMENT_MODES = [
-  { id: 'upi' as const, label: 'UPI', icon: <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v4"></path><path d="M21 12H3"></path><path d="M12 20v4"></path><path d="M3 12h18"></path></svg> },
-  { id: 'card' as const, label: 'Card', icon: <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"></rect><path d="M16 14h-4"></path></svg> },
-  { id: 'wallet' as const, label: 'Wallet', icon: <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"></path><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"></path></svg> },
-  { id: 'netbanking' as const, label: 'Net Banking', icon: <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 14v4"></path><path d="M16 14h-4"></path><path d="M12 10v4"></path><path d="M8 14h4"></path><rect width="20" height="14" x="2" y="5" rx="2"></rect><path d="M6 9h14"></path></svg> },
-] as const
-
-const handlePayment = async (mode: 'upi' | 'card' | 'wallet' | 'netbanking') => {
-  if (!transaction) return
-  setProcessing(true)
-  setPaymentMode(mode)
-
-  await new Promise(resolve => setTimeout(resolve, 2000))
-
-  const { error } = await supabase
-    .from('transactions')
-    .update({
-      status: 'completed',
-      provider: mode,
-      completed_at: new Date().toISOString(),
-    })
-    .eq('id', transaction.id)
-
-  if (!error) {
-    setTransaction(prev => prev ? { ...prev, status: 'completed', provider: mode, completed_at: new Date().toISOString() } : null)
-  }
-  setProcessing(false)
-}
-
-const formatTime = `${Math.floor(timeLeft / 60)}:${(timeLeft % 60).toString().padStart(2, '0')}`
-const isPending = transaction?.status === 'pending'
-const isExpired = isPending && timeLeft <= 0

@@ -6,6 +6,55 @@ import type { Database } from '@/types/database'
 type Booking = Database['public']['Tables']['bookings']['Row']
 type Event = Database['public']['Tables']['events']['Row']
 
+const paymentModes = [
+  { 
+    id: 'upi' as const, 
+    label: 'UPI', 
+    icon: (
+      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 2v4" />
+        <path d="M21 12H3" />
+        <path d="M12 20v4" />
+        <path d="M3 12h18" />
+      </svg>
+    ) 
+  },
+  { 
+    id: 'card' as const, 
+    label: 'Card', 
+    icon: (
+      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect width="20" height="14" x="2" y="5" rx="2" />
+        <line x1="2" x2="22" y1="10" y2="10" />
+      </svg>
+    ) 
+  },
+  { 
+    id: 'wallet' as const, 
+    label: 'Wallet', 
+    icon: (
+      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1" />
+        <path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4" />
+      </svg>
+    ) 
+  },
+  { 
+    id: 'netbanking' as const, 
+    label: 'Net Banking', 
+    icon: (
+      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 14v4" />
+        <path d="M16 14h-4" />
+        <path d="M12 10v4" />
+        <path d="M8 14h4" />
+        <rect width="20" height="14" x="2" y="5" rx="2" />
+        <path d="M6 9h14" />
+      </svg>
+    ) 
+  },
+] as const
+
 export function BookingConfirm() {
   const { bookingId } = useParams<{ bookingId: string }>()
   const [booking, setBooking] = useState<Booking | null>(null)
@@ -61,14 +110,6 @@ export function BookingConfirm() {
   const formatTime = `${mins}:${secs.toString().padStart(2, '0')}`
 
   const isExpired = timeLeft <= 0
-  const isConfirmed = booking?.status === 'confirmed'
-
-  const paymentModes = [
-    { id: 'upi', label: 'UPI', icon: <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v4"></path><path d="M21 12H3"></path><path d="M12 20v4"></path><path d="M3 12h18"></path></svg> },
-    { id: 'card', label: 'Card', icon: <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"></rect><line x1="2" x2="22" y1="10" y2="10"></path> } },
-    { id: 'wallet', label: 'Wallet', icon: <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"></path><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"></path></svg> },
-    { id: 'netbanking', label: 'Net Banking', icon: <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 14v4"></path><path d="M16 14h-4"></path><path d="M12 10v4"></path><path d="M8 14h4"></path><rect width="20" height="14" x="2" y="5" rx="2"></rect><path d="M6 9h14"></path></svg> },
-  ]
 
   if (loading) {
     return (
@@ -76,8 +117,8 @@ export function BookingConfirm() {
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="animate-breathe flex items-center gap-3">
             <svg className="h-8 w-8 text-neon animate-breathe" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="12" cy="12" r="10"></circle>
-              <path d="M12 6v6l4 2"></path>
+              <circle cx="12" cy="12" r="10" />
+              <path d="M12 6v6l4 2" />
             </svg>
             <span className="font-display text-lg font-bold text-foreground">Loading booking…</span>
           </div>
@@ -120,6 +161,8 @@ export function BookingConfirm() {
   // Use static QR code image for display
   const qrCodeImage = '/qr-code.jpeg'
 
+  const isExpired = timeLeft <= 0
+
   return (
     <div className="container" style={{ maxWidth: '600px', margin: '2rem auto 4rem' }}>
       <Link to="/events" className="btn-ghost-arena mb-6 inline-flex">
@@ -155,9 +198,9 @@ export function BookingConfirm() {
                 </div>
                 <div className="timer mb-6 flex items-center justify-center gap-2 text-lg font-display font-bold" style={{ color: timeLeft < 60 ? 'var(--neon-red)' : 'var(--neon)' }}>
                   <svg className="h-6 w-6 animate-breathe" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-                    <line x1="10" x2="14" y1="2" y2="2"></line>
-                    <line x1="12" x2="15" y1="14" y2="11"></line>
-                    <circle cx="12" cy="14" r="8"></circle>
+                    <line x1="10" x2="14" y1="2" y2="2" />
+                    <line x1="12" x2="15" y1="14" y2="11" />
+                    <circle cx="12" cy="14" r="8" />
                   </svg>
                   <span className="tabular-nums">Expires in: {formatTime}</span>
                 </div>

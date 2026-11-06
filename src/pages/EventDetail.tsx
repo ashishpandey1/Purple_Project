@@ -52,14 +52,14 @@ export function EventDetail() {
       .select()
       .single()
 
+    setBooking(false)
     if (!error && data) {
-      // Redirect to booking confirmation page with QR code
       navigate(`/booking/${data.id}`)
     }
     console.log('Booking result:', { data, error })
   }
 
-  const formatDate = (dateStr: string) => {
+  const formatEventDate = (dateStr: string) => {
     const date = new Date(dateStr)
     return date.toLocaleDateString('en-IN', {
       weekday: 'long',
@@ -98,20 +98,7 @@ export function EventDetail() {
     )
   }
 
-  const formatDate = (dateStr: string) => {
-    const date = new Date(dateStr)
-    return date.toLocaleDateString('en-IN', {
-      weekday: 'long',
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    })
-  }
-
   const isUpcoming = event.status === 'upcoming'
-  const isOngoing = event.status === 'ongoing'
 
   return (
     <div className="container" style={{ paddingTop: '2rem', paddingBottom: '3rem' }}>
@@ -145,15 +132,15 @@ export function EventDetail() {
               <div className="flex items-center gap-3 p-4 rounded-2xl border border-glass-border bg-surface/50">
                 <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-glass border border-glass-border text-neon">
                   <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <rect width="18" height="18" x="3" y="4" rx="2"></rect>
-                    <path d="M16 2v4"></path>
-                    <path d="M8 2v4"></path>
-                    <path d="M3 10h18"></path>
+                    <rect width="18" height="18" x="3" y="4" rx="2" />
+                    <path d="M16 2v4" />
+                    <path d="M8 2v4" />
+                    <path d="M3 10h18" />
                   </svg>
                 </span>
                 <div>
                   <p className="label-caps text-xs text-muted-foreground">Date & Time</p>
-                  <p className="font-medium text-foreground">{formatDate(event.event_date)}</p>
+                  <p className="font-medium text-foreground">{formatEventDate(event.event_date)}</p>
                 </div>
               </div>
 
@@ -161,8 +148,8 @@ export function EventDetail() {
                 <div className="flex items-center gap-3 p-4 rounded-2xl border border-glass-border bg-surface/50">
                   <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-glass border border-glass-border text-neon">
                     <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                      <circle cx="12" cy="10" r="3"></circle>
+                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                      <circle cx="12" cy="10" r="3" />
                     </svg>
                   </span>
                   <div>
@@ -175,8 +162,8 @@ export function EventDetail() {
               <div className="flex items-center gap-3 p-4 rounded-2xl border border-glass-border bg-surface/50">
                 <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-glass border border-glass-border text-neon">
                   <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                    <circle cx="12" cy="10" r="3"></circle>
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                    <circle cx="12" cy="10" r="3" />
                   </svg>
                 </span>
                 <div>
@@ -257,4 +244,16 @@ export function EventDetail() {
       </div>
     </div>
   )
+}
+
+const formatEventDate = (dateStr: string) => {
+  const date = new Date(dateStr)
+  return date.toLocaleDateString('en-IN', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  })
 }
