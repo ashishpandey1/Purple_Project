@@ -10,6 +10,7 @@ import { Profile } from './pages/Profile'
 import { Events } from './pages/Events'
 import { EventDetail } from './pages/EventDetail'
 import { BookingConfirm } from './pages/BookingConfirm'
+import { RGBDemo } from './pages/RGBDemo'
 import { ProtectedRoute } from './components/ProtectedRoute'
 
 function AppRoutes() {
@@ -32,6 +33,7 @@ function AppRoutes() {
         <Route path="events" element={<Events />} />
         <Route path="events/:eventId" element={<EventDetail />} />
         <Route path="booking/:bookingId" element={<BookingConfirm />} />
+        <Route path="rgb-demo" element={<RGBDemo />} />
         <Route element={<ProtectedRoute />}>
           <Route path="dashboard/*" element={<Dashboard />} />
           <Route path="payment/:transactionId" element={<Payment />} />
