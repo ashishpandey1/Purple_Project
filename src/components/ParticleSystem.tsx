@@ -27,7 +27,9 @@ export function ParticleSystem({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationRef = useRef<number>();
   const particlesRef = useRef<Particle[]>([]);
-  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0, dpr: 1 });
+
+  const getDpr = () => window.devicePixelRatio || 1;
 
   const createParticle = (): Particle => {
     const side = Math.random() < 0.5 ? 'left' : 'right';
@@ -80,15 +82,21 @@ export function ParticleSystem({
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const dpr = dimensions.dpr;
+    const width = canvas.width;
+    const height = canvas.height;
+
+    ctx.clearRect(0, 0, width, height);
 
     particlesRef.current.forEach(p => {
       ctx.beginPath();
-      ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
+      // Scale particle size by DPR for crisp rendering
+      const displaySize = p.size * p.life * dpr;
+      ctx.arc(p.x * dpr, p.y * dpr, displaySize, 0, Math.PI * 2);
       ctx.fillStyle = p.color;
       ctx.globalAlpha = p.life * 0.6;
       ctx.shadowColor = p.color;
-      ctx.shadowBlur = 10;
+      ctx.shadowBlur = 10 * dpr;
       ctx.fill();
       ctx.globalAlpha = 1;
       ctx.shadowBlur = 0;
@@ -106,24 +114,37 @@ export function ParticleSystem({
     const handleResize = () => {
       const canvas = canvasRef.current;
       if (canvas) {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        setDimensions({ width: canvas.width, height: canvas.height });
+        const dpr = getDpr();
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+        
+        // Set canvas drawing buffer size (accounting for DPR)
+        canvas.width = width * dpr;
+        canvas.height = height * dpr;
+        
+        // Set canvas CSS size
+        canvas.style.width = `${width}px`;
+        canvas.style.height = `${height}px`;
+        
+        // Scale context for high-DPI rendering
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.scale(dpr, dpr);
+        }
+        
+        setDimensions({ width, height, dpr });
         initParticles();
       }
     };
 
     const canvas = canvasRef.current;
     if (canvas) {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      setDimensions({ width: canvas.width, height: canvas.height });
+      handleResize();
     }
 
-    initParticles();
+    window.addEventListener('resize', handleResize);
     animate();
 
-    window.addEventListener('resize', handleResize);
     return () => {
       window.removeEventListener('resize', handleResize);
       if (animationRef.current) {
@@ -139,7 +160,7 @@ export function ParticleSystem({
       ref={canvasRef}
       className={`fixed inset-0 pointer-events-none z-[var(--z-particles,10)] ${className}`}
       aria-hidden="true"
-      style={{ width: '100%', height: '100%' }}
+      style={{ width: '100%', height: '100%', display: 'block' }}
     />
   );
 }
