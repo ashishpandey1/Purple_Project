@@ -13,7 +13,7 @@ export function EventDetail() {
   const [event, setEvent] = useState<Event | null>(null)
   const [loading, setLoading] = useState(true)
   const [quantity, setQuantity] = useState(1)
-  const [booking, setBooking] = useState(false)
+  const [_booking, setBooking] = useState(false)
 
   useEffect(() => {
     if (!eventId) return
@@ -36,7 +36,6 @@ export function EventDetail() {
   const handleBook = async () => {
     if (!user || !event) return
     setBooking(true)
-    const totalAmount = event.price * quantity
 
     const { data, error } = await supabase
       .from('bookings')
@@ -244,16 +243,4 @@ export function EventDetail() {
       </div>
     </div>
   )
-}
-
-const formatEventDate = (dateStr: string) => {
-  const date = new Date(dateStr)
-  return date.toLocaleDateString('en-IN', {
-    weekday: 'long',
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
-  })
 }

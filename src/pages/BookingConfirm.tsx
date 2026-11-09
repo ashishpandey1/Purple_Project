@@ -4,7 +4,7 @@ import { supabase } from '@/lib/supabase'
 import type { Database } from '@/types/database'
 
 type Booking = Database['public']['Tables']['bookings']['Row']
-type Event = Database['public']['Tables']['events']['Row']
+type EventRow = Database['public']['Tables']['events']['Row']
 
 const paymentModes = [
   { 
@@ -58,7 +58,7 @@ const paymentModes = [
 export function BookingConfirm() {
   const { bookingId } = useParams<{ bookingId: string }>()
   const [booking, setBooking] = useState<Booking | null>(null)
-  const [event, setEvent] = useState<Event | null>(null)
+  const [event, setEvent] = useState<EventRow | null>(null)
   const [loading, setLoading] = useState(true)
   const [timeLeft, setTimeLeft] = useState(120)
   const [paymentMode, setPaymentMode] = useState<'upi' | 'card' | 'wallet' | 'netbanking'>('upi')
@@ -80,8 +80,8 @@ export function BookingConfirm() {
       .single()
 
     if (!error && data) {
-      setBooking(data as Booking & { event: Event })
-      setEvent(data.event as Event)
+      setBooking(data as Booking & { event: EventRow })
+      setEvent(data.event as EventRow)
     }
     setLoading(false)
   }
@@ -105,11 +105,12 @@ export function BookingConfirm() {
     return () => clearInterval(timerInterval)
   }, [booking])
 
+  const isExpired = timeLeft <= 0
+
   const mins = Math.floor(timeLeft / 60)
   const secs = timeLeft % 60
   const formatTime = `${mins}:${secs.toString().padStart(2, '0')}`
-
-  const isExpired = timeLeft <= 0
+  const qrCodeImage = '/qr-code.jpeg'
 
   if (loading) {
     return (
@@ -137,31 +138,6 @@ export function BookingConfirm() {
       </div>
     )
   }
-
-  const formatDate = (dateStr: string) => {
-    const date = new Date(dateStr)
-    return date.toLocaleDateString('en-IN', {
-      weekday: 'long',
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    })
-  }
-
-  // Generate QR code from booking data
-  const qrCodeData = booking.qr_code_data || JSON.stringify({
-    booking_id: booking.id,
-    event_id: booking.event_id,
-    amount: booking.total_amount,
-    expires_at: booking.qr_expires_at
-  })
-
-  // Use static QR code image for display
-  const qrCodeImage = '/qr-code.jpeg'
-
-  const isExpired = timeLeft <= 0
 
   return (
     <div className="container" style={{ maxWidth: '600px', margin: '2rem auto 4rem' }}>
@@ -256,12 +232,4 @@ export function BookingConfirm() {
       </div>
     </div>
   )
-}
-
-type Event = {
-  id: string
-  title: string
-  event_date: string
-  price: number
-  currency: string
 }
