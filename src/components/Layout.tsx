@@ -8,6 +8,7 @@ export function Layout() {
   const navLinks = [
     { path: '/', label: 'Home' },
     { path: '/events', label: 'Events' },
+    { path: '/rgb-demo', label: 'RGB Demo' },
     { path: '/dashboard', label: 'Dashboard', auth: true },
     { path: '/profile', label: 'Profile', auth: true },
   ]
