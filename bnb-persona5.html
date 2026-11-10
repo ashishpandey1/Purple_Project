@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BnB - The Ultimate Fighting Tournament App</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Iconify -->
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@300;400;500;600;700&family=Permanent+Marker&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'p5-red': '#D92323',
+            'p5-black': '#1a1a1a',
+            'p5-dark': '#202020',
+            'p5-gray': '#e5e5e5',
+          },
+          fontFamily: {
+            'anton': ['Anton', 'sans-serif'],
+            'oswald': ['Oswald', 'sans-serif'],
+            'marker': ['Permanent Marker', 'cursive'],
+          },
+          clipPath: {
+            'jagged': 'polygon(0 0, 100% 0, 98% 100%, 2% 98%)',
+            'slant-right': 'polygon(0 0, 100% 0, 90% 100%, 0% 100%)',
+            'slant-left': 'polygon(10% 0, 100% 0, 100% 100%, 0% 100%)',
+            'starburst': 'polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%)',
+          },
+          keyframes: {
+            'slideInLeft': {
+              '0%': { transform: 'translateX(-100%) skewX(-12deg)', opacity: '0' },
+              '100%': { transform: 'translateX(0) skewX(0)', opacity: '1' },
+            },
+            'slideInRight': {
+              '0%': { transform: 'translateX(100%) skewX(12deg)', opacity: '0' },
+              '100%': { transform: 'translateX(0) skewX(0)', opacity: '1' },
+            },
+            'pulse-p5': {
+              '0%, 100%': { transform: 'scale(1) rotate(-3deg)' },
+              '50%': { transform: 'scale(1.05) rotate(-3deg)' },
+            },
+            'enter-left': {
+              '0%': { transform: 'translateX(-60px) skewX(-8deg)', opacity: '0' },
+              '100%': { transform: 'translateX(0) skewX(0)', opacity: '1' },
+            },
+          },
+          animation: {
+            'slide-in-left': 'slideInLeft 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+            'slide-in-right': 'slideInRight 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+            'pulse-p5': 'pulse-p5 2s ease-in-out infinite',
+            'enter-left': 'enter-left 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+          },
+        }
+      }
+    }
+  </script>
+  
+  <style>
+    /* Global base styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Oswald', sans-serif;
+      background-color: #1a1a1a;
+      color: #ffffff;
+      overflow-x: hidden;
+    }
+    
+    /* Halftone Backgrounds */
+    .bg-halftone {
+      background-color: #D92323;
+      background-image: radial-gradient(#202020 20%, transparent 20%);
+      background-size: 10px 10px;
+    }
+    
+    .bg-halftone-white {
+      background-color: #ffffff;
+      background-image: radial-gradient(#e5e5e5 20%, transparent 20%);
+      background-size: 10px 10px;
+    }
+    
+    /* Custom Shadows */
+    .text-shadow-hard {
+      text-shadow: 4px 4px 0px #000;
+    }
+    
+    .box-shadow-hard {
+      box-shadow: 8px 8px 0px #000;
+    }
+    
+    /* Clip Paths */
+    .clip-jagged {
+      clip-path: polygon(0 0, 100% 0, 98% 100%, 2% 98%);
+    }
+    
+    .clip-slant-right {
+      clip-path: polygon(0 0, 100% 0, 90% 100%, 0% 100%);
+    }
+    
+    .clip-slant-left {
+      clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%);
+    }
+    
+    .clip-starburst {
+      clip-path: polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%);
+    }
+    
+    /* Skew utilities */
+    .skew-x-12 { transform: skewX(12deg); }
+    .-skew-x-12 { transform: skewX(-12deg); }
+    .skew-y-2 { transform: skewY(2deg); }
+    .-skew-y-2 { transform: skewY(-2deg); }
+    
+    /* Animation delays */
+    .delay-100 { animation-delay: 100ms; }
+    .delay-200 { animation-delay: 200ms; }
+    .delay-300 { animation-delay: 300ms; }
+    .delay-400 { animation-delay: 400ms; }
+    .delay-500 { animation-delay: 500ms; }
+    
+    /* Grayscale transition */
+    .grayscale-img {
+      filter: grayscale(1) contrast(1.25);
+      transition: filter 0.3s ease;
+    }
+    
+    .grayscale-img:hover {
+      filter: grayscale(0) contrast(1);
+    }
+    
+    /* Newsletter word rotations */
+    .word-1 { transform: rotate(2deg); }
+    .word-2 { transform: rotate(-3deg); }
+    .word-3 { transform: rotate(1deg); }
+    .word-4 { transform: rotate(-2deg); }
+    
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #1a1a1a; }
+    ::-webkit-scrollbar-thumb { background: #D92323; }
+    ::-webkit-scrollbar-thumb:hover { background: #ff3333; }
+    
+    /* Selection */
+    ::selection { background: #D92323; color: #fff; }
+    
+    /* Focus */
+    :focus-visible { outline: 2px solid #D92323; outline-offset: 2px; }
+  </style>
+</head>
+<body class="font-oswald antialiased">
+  
+  <!-- ===========================================
+       NAVBAR - SECTION 1
+       =========================================== -->
+  <nav class="fixed top-0 left-0 right-0 z-50 pointer-events-none" role="navigation" aria-label="Main navigation">
+    <div class="container mx-auto px-6 py-4 pointer-events-auto">
+      <div class="flex items-center justify-between">
+        <!-- Logo: Double-layered jagged blocks -->
+        <a href="#" class="relative flex items-center gap-2 group" aria-label="BnB Home">
+          <!-- Bottom layer - Red -->
+          <div class="clip-jagged bg-p5-red px-5 py-2.5 box-shadow-hard">
+            <span class="font-anton text-2xl text-white">B</span>
+          </div>
+          <!-- Top layer - Black offset -->
+          <div class="clip-jagged bg-p5-black px-5 py-2.5 -ml-2 -mt-1 box-shadow-hard">
+            <span class="font-anton text-2xl text-p5-red">n</span>
+          </div>
+          <!-- Third element - Gray -->
+          <div class="clip-jagged bg-gray-400 px-5 py-2.5 -ml-2 -mt-1">
+            <span class="font-anton text-2xl text-p5-black">b</span>
+          </div>
+        </a>
+        
+        <!-- Nav Links: Skewed containers -->
+        <div class="hidden md:flex items-center gap-6 pointer-events-auto">
+          <a href="#features" class="relative -skew-x-12 px-4 py-2 bg-transparent text-white font-oswald font-medium uppercase tracking-wide transition-all duration-200 hover:bg-p5-red hover:text-white group">
+            <span class="skew-x-12 inline-block">Features</span>
+          </a>
+          <a href="#preview" class="relative -skew-x-12 px-4 py-2 bg-transparent text-white font-oswald font-medium uppercase tracking-wide transition-all duration-200 hover:bg-p5-red hover:text-white group">
+            <span class="skew-x-12 inline-block">Preview</span>
+          </a>
+          <a href="#download" class="relative -skew-x-12 px-4 py-2 bg-transparent text-white font-oswald font-medium uppercase tracking-wide transition-all duration-200 hover:bg-p5-red hover:text-white group">
+            <span class="skew-x-12 inline-block">Download</span>
+          </a>
+        </div>
+        
+        <!-- CTA Button -->
+        <a href="#download" class="clip-slant-right bg-p5-red text-white font-anton py-3 px-6 box-shadow-hard transition-all duration-200 hover:bg-white hover:text-p5-red hover:scale-[1.02] pointer-events-auto">
+          JOIN THE FIGHT
+        </a>
+      </div>
+    </div>
+  </nav>
+  
+  <!-- ===========================================
+       HERO SECTION - SECTION 2
+       =========================================== -->
+  <section class="relative min-h-screen flex items-center overflow-hidden" aria-labelledby="hero-heading">
+    <!-- 1. Halftone Right Background -->
+    <div class="absolute top-0 right-0 w-1/2 h-full bg-halftone" aria-hidden="true"></div>
+    
+    <!-- 2. Dark Bottom-Left Polygon -->
+    <div class="absolute bottom-0 left-0 w-full h-3/4 bg-p5-black clip-path-[polygon(0_100%,100%_0,100%_100%,0_100%)]" aria-hidden="true"></div>
+    
+    <!-- 3. White/Black Decorative Lines -->
+    <div class="absolute top-1/4 left-10 w-2 h-32 bg-white rotate-6" aria-hidden="true"></div>
+    <div class="absolute top-1/3 right-1/4 w-1 h-48 bg-p5-red -rotate-3" aria-hidden="true"></div>
+    <div class="absolute bottom-20 left-20 w-64 h-0.5 bg-white/20" aria-hidden="true"></div>
+    <div class="absolute bottom-20 left-20 w-0.5 h-64 bg-white/20" aria-hidden="true"></div>
+    <div class="absolute bottom-20 right-20 w-64 h-0.5 bg-white/20" aria-hidden="true"></div>
+    <div class="absolute bottom-20 right-20 w-0.5 h-64 bg-white/20" aria-hidden="true"></div>
+    
+    <!-- Hero Graphic SVG -->
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 opacity-5 pointer-events-none" aria-hidden="true">
+      <svg viewBox="0 0 100 100" width="100%" height="100%" fill="none">
+        <path d="M0,0 L100,100 M100,0 L0,100" stroke="white" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="50" cy="50" r="40" stroke="white" stroke-width="1" fill="none"/>
+        <circle cx="50" cy="50" r="20" stroke="white" stroke-width="1" fill="none"/>
+      </svg>
+    </div>
+    
+    <!-- 4. Text and Interactive Card -->
+    <div class="container mx-auto px-6 relative z-10">
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <!-- Left: Text Content -->
+        <div class="animate-enter-left" style="animation-delay: 100ms;">
+          <p class="font-marker text-2xl md:text-3xl text-p5-red mb-4 tracking-wider">WAKE UP</p>
+          <h1 id="hero-heading" class="font-anton text-5xl md:text-7xl lg:text-8xl leading-[0.95] text-white text-shadow-hard mb-6">
+            GET UP
+            <br>
+            <span class="text-p5-red">FIGHT OUT</span>
+          </h1>
+          <p class="font-oswald text-lg md:text-xl text-gray-300 mb-10 max-w-xl leading-relaxed">
+            The ultimate tournament platform for phantom thieves. 
+            Create brackets, track stats, and dominate the meta.
+          </p>
+          
+          <!-- Main CTA: Red button with black absolute shadow offset -->
+          <div class="relative">
+            <!-- Black shadow offset -->
+            <div class="absolute bottom-0 right-0 w-full h-full bg-p5-black clip-slant-right translate-x-3 translate-y-3 -z-10" aria-hidden="true"></div>
+            <!-- Red button -->
+            <a href="#download" class="clip-slant-right bg-p5-red text-white font-anton text-lg py-4 px-10 box-shadow-hard inline-block transition-all duration-200 hover:bg-white hover:text-p5-red hover:scale-[1.02] relative z-10">
+              DOWNLOAD NOW
+            </a>
+          </div>
+          
+          <!-- Stats bar -->
+          <div class="mt-12 flex flex-wrap gap-8 text-white">
+            <div class="font-anton text-3xl md:text-4xl text-p5-red">50K+</div>
+            <div class="font-oswald text-sm uppercase tracking-wider text-gray-400 pt-2">TOURNAMENTS</div>
+            <div class="font-anton text-3xl md:text-4xl text-p5-red">120K</div>
+            <div class="font-oswald text-sm uppercase tracking-wider text-gray-400 pt-2">FIGHTERS</div>
+            <div class="font-anton text-3xl md:text-4xl text-p5-red">99.9%</div>
+            <div class="font-oswald text-sm uppercase tracking-wider text-gray-400 pt-2">UPTIME</div>
+          </div>
+        </div>
+        
+        <!-- Right: White card with rotate-3, containing grayscale game icon area -->
+        <div class="relative animate-enter-left" style="animation-delay: 300ms;">
+          <div class="bg-white rotate-3 p-1 box-shadow-hard">
+            <div class="bg-p5-black p-8 relative overflow-hidden">
+              <!-- Grayscale game icon area -->
+              <div class="relative aspect-[4/3] rounded-lg overflow-hidden grayscale-img">
+                <div class="absolute inset-0 bg-gradient-to-br from-p5-red/20 via-transparent to-p5-black" aria-hidden="true"></div>
+                <div class="relative z-10 flex items-center justify-center h-full">
+                  <iconify-icon icon="solar:gamepad-charge-linear" class="text-white text-9xl opacity-80"></iconify-icon>
+                </div>
+              </div>
+              
+              <!-- Card content -->
+              <div class="mt-6">
+                <div class="flex items-center gap-4 mb-4">
+                  <div class="clip-starburst bg-p5-red w-14 h-14 flex items-center justify-center">
+                    <iconify-icon icon="solar:star-fall-bold" class="text-white text-2xl"></iconify-icon>
+                  </div>
+                  <div>
+                    <p class="font-marker text-lg text-p5-red">PHANTOM THIEF EDITION</p>
+                    <p class="font-anton text-2xl text-white">BnB TOURNAMENT</p>
+                  </div>
+                </div>
+                
+                <div class="grid grid-cols-3 gap-4 text-center">
+                  <div class="bg-p5-dark p-4 rounded-lg clip-jagged">
+                    <p class="font-anton text-3xl text-p5-red">BRACKETS</p>
+                    <p class="font-oswald text-sm text-gray-400">Double Elimination</p>
+                  </div>
+                  <div class="bg-p5-dark p-4 rounded-lg clip-jagged">
+                    <p class="font-anton text-3xl text-p5-red">MATCHES</p>
+                    <p class="font-oswald text-sm text-gray-400">Real-time Sync</p>
+                  </div>
+                  <div class="bg-p5-dark p-4 rounded-lg clip-jagged">
+                    <p class="font-anton text-3xl text-p5-red">STATS</p>
+                    <p class="font-oswald text-sm text-gray-400">Frame Data</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Floating accent elements -->
+          <div class="absolute -top-4 -right-4 w-24 h-24 border-4 border-p5-red clip-starburst rotate-6 animate-pulse-p5" aria-hidden="true"></div>
+          <div class="absolute bottom-8 -left-8 w-16 h-16 bg-p5-red clip-jagged -rotate-12" aria-hidden="true"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- ===========================================
+       FEATURES STRIP - SECTION 3
+       =========================================== -->
+  <section id="features" class="relative py-24 -skew-y-2 bg-p5-black" aria-labelledby="features-heading">
+    <div class="skew-y-2 container mx-auto px-6">
+      <!-- Section Header -->
+      <div class="text-center mb-16 animate-enter-left">
+        <div class="inline-block clip-slant-right bg-p5-red px-8 py-3 mb-6">
+          <p class="font-anton text-2xl text-white">FEATURES</p>
+        </div>
+        <h2 id="features-heading" class="font-anton text-4xl md:text-5xl text-white text-shadow-hard max-w-2xl mx-auto">
+          BUILT FOR THE <span class="text-p5-red">META</span>
+        </h2>
+      </div>
+      
+      <!-- 3 Feature Cards -->
+      <div class="grid md:grid-cols-3 gap-8">
+        <!-- Feature 1 -->
+        <article class="group bg-p5-dark p-8 rounded-xl clip-jagged box-shadow-hard transition-all duration-300 hover:-translate-y-2 hover:-rotate-1 hover:box-shadow-hard hover:shadow-p5-red relative overflow-hidden">
+          <div class="absolute inset-0 bg-gradient-to-tr from-p5-red/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true"></div>
+          
+          <div class="relative z-10 mb-6">
+            <div class="clip-starburst bg-p5-red w-16 h-16 flex items-center justify-center box-shadow-hard">
+              <iconify-icon icon="solar:graph-up-linear" class="text-white text-3xl"></iconify-icon>
+            </div>
+          </div>
+          
+          <h3 class="font-anton text-2xl text-white mb-3 relative z-10">LIVE BRACKETS</h3>
+          <p class="font-oswald text-gray-400 leading-relaxed relative z-10">
+            Real-time double elimination brackets with frame-perfect sync. 
+            Watch matches unfold live with zero latency.
+          </p>
+          
+          <!-- Accent line -->
+          <div class="absolute bottom-0 left-0 w-0 h-1 bg-p5-red group-hover:w-full transition-all duration-300" aria-hidden="true"></div>
+        </article>
+        
+        <!-- Feature 2 -->
+        <article class="group bg-p5-dark p-8 rounded-xl clip-jagged box-shadow-hard transition-all duration-300 hover:-translate-y-2 hover:-rotate-1 hover:box-shadow-hard hover:shadow-p5-red relative overflow-hidden">
+          <div class="absolute inset-0 bg-gradient-to-tr from-p5-red/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true"></div>
+          
+          <div class="relative z-10 mb-6">
+            <div class="clip-starburst bg-white w-16 h-16 flex items-center justify-center box-shadow-hard">
+              <iconify-icon icon="solar:users-group-rounded-linear" class="text-p5-black text-3xl"></iconify-icon>
+            </div>
+          </div>
+          
+          <h3 class="font-anton text-2xl text-white mb-3 relative z-10">TEAM MANAGEMENT</h3>
+          <p class="font-oswald text-gray-400 leading-relaxed relative z-10">
+            Build your crew. Manage rosters, track player stats, 
+            and coordinate schedules with integrated comms.
+          </p>
+          
+          <div class="absolute bottom-0 left-0 w-0 h-1 bg-p5-red group-hover:w-full transition-all duration-300" aria-hidden="true"></div>
+        </article>
+        
+        <!-- Feature 3 -->
+        <article class="group bg-p5-dark p-8 rounded-xl clip-jagged box-shadow-hard transition-all duration-300 hover:-translate-y-2 hover:-rotate-1 hover:box-shadow-hard hover:shadow-p5-red relative overflow-hidden">
+          <div class="absolute inset-0 bg-gradient-to-tr from-p5-red/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true"></div>
+          
+          <div class="relative z-10 mb-6">
+            <div class="clip-starburst bg-p5-red w-16 h-16 flex items-center justify-center box-shadow-hard">
+              <iconify-icon icon="solar:crown-star-linear" class="text-white text-3xl"></iconify-icon>
+            </div>
+          </div>
+          
+          <h3 class="font-anton text-2xl text-white mb-3 relative z-10">RANKED LADDERS</h3>
+          <p class="font-oswald text-gray-400 leading-relaxed relative z-10">
+            Climb the ranks. ELO-based matchmaking, 
+            seasonal rewards, and leaderboard immortality.
+          </p>
+          
+          <div class="absolute bottom-0 left-0 w-0 h-1 bg-p5-red group-hover:w-full transition-all duration-300" aria-hidden="true"></div>
+        </article>
+      </div>
+    </div>
+    
+    <!-- Decorative elements -->
+    <div class="absolute top-0 left-1/4 w-32 h-32 border-4 border-p5-red/20 clip-starburst rotate-12" aria-hidden="true"></div>
+    <div class="absolute bottom-0 right-1/4 w-24 h-24 bg-p5-red clip-jagged -rotate-6" aria-hidden="true"></div>
+  </section>
+  
+  <!-- ===========================================
+       APP PREVIEW - SECTION 4
+       =========================================== -->
+  <section id="preview" class="relative py-24 bg-p5-black overflow-hidden" aria-labelledby="preview-heading">
+    <!-- Large background text "PHANTOM THIEF" -->
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-5 rotate-12 pointer-events-none" aria-hidden="true">
+      <p class="font-anton text-9xl md:text-12xl text-white whitespace-nowrap tracking-wider">PHANTOM THIEF</p>
+    </div>
+    
+    <div class="container mx-auto px-6 relative z-10">
+      <div class="grid lg:grid-cols-3 gap-12 items-center">
+        <!-- Left: Side Controls -->
+        <div class="space-y-6 order-last lg:order-first animate-enter-left" style="animation-delay: 100ms;">
+          <!-- Control Panel 1 -->
+          <div class="group relative bg-p5-dark p-6 rounded-xl clip-slant-left border-l-4 border-p5-red transition-all duration-300 hover:translate-x-2 hover:border-white">
+            <div class="flex items-center gap-4">
+              <div class="clip-starburst bg-p5-red w-12 h-12 flex items-center justify-center">
+                <iconify-icon icon="solar:list-bold" class="text-white text-xl"></iconify-icon>
+              </div>
+              <div>
+                <p class="font-marker text-sm text-p5-red">CONTROL</p>
+                <p class="font-anton text-xl text-white">TOURNAMENT BRACKET</p>
+              </div>
+            </div>
+            <div class="mt-4 pt-4 border-t border-white/10">
+              <p class="font-oswald text-sm text-gray-400">Double elimination with live seeding</p>
+            </div>
+          </div>
+          
+          <!-- Control Panel 2 -->
+          <div class="group relative bg-p5-dark p-6 rounded-xl clip-slant-right border-r-4 border-p5-red transition-all duration-300 hover:-translate-x-2 hover:border-white">
+            <div class="flex items-center gap-4">
+              <div class="clip-starburst bg-white w-12 h-12 flex items-center justify-center">
+                <iconify-icon icon="solar:settings-linear" class="text-p5-black text-xl"></iconify-icon>
+              </div>
+              <div>
+                <p class="font-marker text-sm text-p5-red">CONTROL</p>
+                <p class="font-anton text-xl text-white">MATCH CONFIG</p>
+              </div>
+            </div>
+            <div class="mt-4 pt-4 border-t border-white/10">
+              <p class="font-oswald text-sm text-gray-400">Best of 3/5, stage selection, rulesets</p>
+            </div>
+          </div>
+          
+          <!-- Control Panel 3 -->
+          <div class="group relative bg-p5-dark p-6 rounded-xl clip-slant-left border-l-4 border-p5-red transition-all duration-300 hover:translate-x-2 hover:border-white">
+            <div class="flex items-center gap-4">
+              <div class="clip-starburst bg-p5-red w-12 h-12 flex items-center justify-center">
+                <iconify-icon icon="solar:add-linear" class="text-white text-xl"></iconify-icon>
+              </div>
+              <div>
+                <p class="font-marker text-sm text-p5-red">CONTROL</p>
+                <p class="font-anton text-xl text-white">ADD FIGHTER</p>
+              </div>
+            </div>
+            <div class="mt-4 pt-4 border-t border-white/10">
+              <p class="font-oswald text-sm text-gray-400">Custom characters, cosmetics, stats</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Center: Mobile Mockup -->
+        <div class="relative flex justify-center animate-enter-left" style="animation-delay: 200ms;">
+          <div class="relative w-64 h-[500px] rounded-3xl rotate-3 box-shadow-hard overflow-hidden">
+            <!-- Mockup Frame -->
+            <div class="absolute inset-0 bg-p5-black rounded-3xl">
+              <!-- Red Header with clip-slant-left -->
+              <div class="absolute top-0 left-0 right-0 h-24 bg-p5-red clip-slant-left flex items-center justify-between px-6">
+                <p class="font-anton text-xl text-white z-10">BnB TOURNAMENT</p>
+                <div class="clip-starburst bg-white w-10 h-10 flex items-center justify-center z-10">
+                  <iconify-icon icon="solar:cup-star-bold" class="text-p5-red text-xl"></iconify-icon>
+                </div>
+              </div>
+              
+              <!-- Mockup Content -->
+              <div class="absolute top-28 bottom-24 left-4 right-4 overflow-y-auto pr-2">
+                <!-- Skewed list items -->
+                <div class="space-y-4">
+                  <div class="group -skew-x-3 bg-p5-dark p-4 rounded-lg clip-jagged transition-all duration-200 hover:-translate-x-1 hover:bg-p5-red/20">
+                    <div class="flex items-center justify-between skew-x-3">
+                      <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-p5-red flex items-center justify-center">
+                          <iconify-icon icon="solar:user-circle-linear" class="text-white text-xl"></iconify-icon>
+                        </div>
+                        <div>
+                          <p class="font-anton text-white">JOKER</p>
+                          <p class="font-oswald text-xs text-gray-400">PHANTOM THIEF</p>
+                        </div>
+                      </div>
+                      <div class="text-right">
+                        <p class="font-anton text-xl text-p5-red">WIN</p>
+                        <p class="font-oswald text-xs text-gray-400">3 - 1</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="group -skew-x-3 bg-p5-dark p-4 rounded-lg clip-jagged transition-all duration-200 hover:-translate-x-1 hover:bg-p5-red/20">
+                    <div class="flex items-center justify-between skew-x-3">
+                      <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-p5-red flex items-center justify-center">
+                          <iconify-icon icon="solar:user-circle-linear" class="text-white text-xl"></iconify-icon>
+                        </div>
+                        <div>
+                          <p class="font-anton text-white">SKULL</p>
+                          <p class="font-oswald text-xs text-gray-400">PT MEMBER</p>
+                        </div>
+                      </div>
+                      <div class="text-right">
+                        <p class="font-anton text-xl text-gray-400">LOSE</p>
+                        <p class="font-oswald text-xs text-gray-500">1 - 3</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="group -skew-x-3 bg-p5-dark p-4 rounded-lg clip-jagged transition-all duration-200 hover:-translate-x-1 hover:bg-p5-red/20">
+                    <div class="flex items-center justify-between skew-x-3">
+                      <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+                          <iconify-icon icon="solar:user-circle-linear" class="text-gray-400 text-xl"></iconify-icon>
+                        </div>
+                        <div>
+                          <p class="font-anton text-white">FOX</p>
+                          <p class="font-oswald text-xs text-gray-400">PT MEMBER</p>
+                        </div>
+                      </div>
+                      <div class="text-right">
+                        <p class="font-anton text-xl text-p5-red">WIN</p>
+                        <p class="font-oswald text-xs text-gray-400">3 - 0</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="group -skew-x-3 bg-p5-dark p-4 rounded-lg clip-jagged transition-all duration-200 hover:-translate-x-1 hover:bg-p5-red/20">
+                    <div class="flex items-center justify-between skew-x-3">
+                      <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+                          <iconify-icon icon="solar:user-circle-linear" class="text-gray-400 text-xl"></iconify-icon>
+                        </div>
+                        <div>
+                          <p class="font-anton text-white">NOIR</p>
+                          <p class="font-oswald text-xs text-gray-400">PT MEMBER</p>
+                        </div>
+                      </div>
+                      <div class="text-right">
+                        <p class="font-anton text-xl text-gray-400">LOSE</p>
+                        <p class="font-oswald text-xs text-gray-500">0 - 3</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Bottom Nav -->
+              <div class="absolute bottom-0 left-0 right-0 h-20 bg-p5-dark/80 backdrop-blur-sm border-t border-white/10 flex items-center justify-around">
+                <button class="flex flex-col items-center gap-1 text-white/60 hover:text-p5-red transition-colors" aria-label="Bracket">
+                  <iconify-icon icon="solar:list-bold" class="text-xl"></iconify-icon>
+                  <span class="font-oswald text-xs">BRACKET</span>
+                </button>
+                <button class="flex flex-col items-center gap-1 text-p5-red" aria-label="Matches">
+                  <iconify-icon icon="solar:graph-up-linear" class="text-xl"></iconify-icon>
+                  <span class="font-oswald text-xs">MATCHES</span>
+                </button>
+                <button class="flex flex-col items-center gap-1 text-white/60 hover:text-p5-red transition-colors" aria-label="Profile">
+                  <iconify-icon icon="solar:user-circle-linear" class="text-xl"></iconify-icon>
+                  <span class="font-oswald text-xs">PROFILE</span>
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Floating decorative elements around mockup -->
+          <div class="absolute -top-4 -left-4 w-16 h-16 border-2 border-p5-red clip-jagged rotate-6" aria-hidden="true"></div>
+          <div class="absolute -bottom-4 -right-4 w-12 h-12 bg-p5-red clip-starburst -rotate-12" aria-hidden="true"></div>
+          <div class="absolute top-1/2 -right-8 w-4 h-4 bg-white rounded-full animate-pulse-p5" aria-hidden="true"></div>
+        </div>
+        
+        <!-- Right: Additional Info -->
+        <div class="space-y-8 animate-enter-left" style="animation-delay: 400ms;">
+          <div class="text-center lg:text-left">
+            <div class="inline-block clip-slant-right bg-p5-red px-6 py-2 mb-4">
+              <p class="font-anton text-lg text-white">APP PREVIEW</p>
+            </div>
+            <h2 id="preview-heading" class="font-anton text-4xl md:text-5xl text-white text-shadow-hard mb-4">
+              TOURNAMENT IN<br>YOUR POCKET
+            </h2>
+            <p class="font-oswald text-lg text-gray-400 leading-relaxed mb-8 max-w-xs mx-auto lg:mx-0">
+              Native performance. Real-time updates. 
+              The full BnB experience optimized for mobile.
+            </p>
+          </div>
+          
+          <!-- Feature highlights -->
+          <div class="space-y-4">
+            <div class="group flex items-start gap-4 p-4 bg-p5-dark rounded-xl clip-jagged transition-all duration-300 hover:translate-x-2 hover:bg-p5-red/10">
+              <div class="clip-starburst bg-p5-red w-12 h-12 flex items-center justify-center flex-shrink-0">
+                <iconify-icon icon="solar:arrow-right-linear" class="text-white text-xl"></iconify-icon>
+              </div>
+              <div>
+                <p class="font-anton text-lg text-white group-hover:text-p5-red transition-colors">INSTANT NOTIFICATIONS</p>
+                <p class="font-oswald text-sm text-gray-400">Match callouts, bracket updates, results</p>
+              </div>
+            </div>
+            
+            <div class="group flex items-start gap-4 p-4 bg-p5-dark rounded-xl clip-jagged transition-all duration-300 hover:translate-x-2 hover:bg-p5-red/10">
+              <div class="clip-starburst bg-white w-12 h-12 flex items-center justify-center flex-shrink-0">
+                <iconify-icon icon="solar:gamepad-charge-linear" class="text-p5-black text-xl"></iconify-icon>
+              </div>
+              <div>
+                <p class="font-anton text-lg text-white group-hover:text-p5-red transition-colors">OFFLINE MODE</p>
+                <p class="font-oswald text-sm text-gray-400">Manage local tournaments without connection</p>
+              </div>
+            </div>
+            
+            <div class="group flex items-start gap-4 p-4 bg-p5-dark rounded-xl clip-jagged transition-all duration-300 hover:translate-x-2 hover:bg-p5-red/10">
+              <div class="clip-starburst bg-p5-red w-12 h-12 flex items-center justify-center flex-shrink-0">
+                <iconify-icon icon="solar:crown-star-linear" class="text-white text-xl"></iconify-icon>
+              </div>
+              <div>
+                <p class="font-anton text-lg text-white group-hover:text-p5-red transition-colors">STREAM INTEGRATION</p>
+                <p class="font-oswald text-sm text-gray-400">OBS overlay, Twitch alerts, auto-clips</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Download CTA -->
+          <a href="#download" class="clip-slant-right bg-p5-red text-white font-anton text-lg py-4 px-8 box-shadow-hard inline-block transition-all duration-200 hover:bg-white hover:text-p5-red hover:scale-[1.02] w-full text-center">
+            <span class="flex items-center justify-center gap-2">
+              <iconify-icon icon="solar:arrow-right-linear" class="text-xl"></iconify-icon>
+              GET THE APP
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- ===========================================
+       FOOTER - SECTION 5
+       =========================================== -->
+  <footer class="relative bg-p5-black pt-32 pb-16" role="contentinfo">
+    <!-- Top Border: -20px top offset bg-p5-red jagged overlay -->
+    <div class="absolute top-[-20px] left-0 right-0 h-20 bg-p5-red clip-path-[polygon(0_100%,100%_0,100%_100%,0_100%)]" aria-hidden="true"></div>
+    
+    <div class="container mx-auto px-6 relative z-10">
+      <div class="grid lg:grid-cols-2 gap-12 mb-16">
+        <!-- Left: Brand -->
+        <div class="animate-enter-left">
+          <!-- Logo -->
+          <div class="flex items-center gap-2 mb-6">
+            <div class="clip-jagged bg-p5-red px-5 py-2.5 box-shadow-hard">
+              <span class="font-anton text-2xl text-white">B</span>
+            </div>
+            <div class="clip-jagged bg-p5-black px-5 py-2.5 -ml-2 -mt-1 box-shadow-hard">
+              <span class="font-anton text-2xl text-p5-red">n</span>
+            </div>
+            <div class="clip-jagged bg-gray-400 px-5 py-2.5 -ml-2 -mt-1">
+              <span class="font-anton text-2xl text-p5-black">b</span>
+            </div>
+          </div>
+          
+          <p class="font-oswald text-gray-400 leading-relaxed mb-8 max-w-xs">
+            The ultimate fighting tournament platform. 
+            Built for competitors, by competitors.
+          </p>
+          
+          <!-- Social Links -->
+          <div class="flex gap-4">
+            <a href="#" class="group w-12 h-12 bg-p5-dark rounded-xl clip-jagged flex items-center justify-center transition-all duration-200 hover:bg-p5-red hover:rotate-3" aria-label="Twitter">
+              <iconify-icon icon="solar:brand-twitter-linear" class="text-white text-xl group-hover:text-p5-black transition-colors"></iconify-icon>
+            </a>
+            <a href="#" class="group w-12 h-12 bg-p5-dark rounded-xl clip-jagged flex items-center justify-center transition-all duration-200 hover:bg-p5-red hover:-rotate-3" aria-label="Instagram">
+              <iconify-icon icon="solar:brand-instagram-linear" class="text-white text-xl group-hover:text-p5-black transition-colors"></iconify-icon>
+            </a>
+            <a href="#" class="group w-12 h-12 bg-p5-dark rounded-xl clip-jagged flex items-center justify-center transition-all duration-200 hover:bg-p5-red hover:rotate-3" aria-label="Discord">
+              <iconify-icon icon="solar:brand-discord-linear" class="text-white text-xl group-hover:text-p5-black transition-colors"></iconify-icon>
+            </a>
+          </div>
+        </div>
+        
+        <!-- Right: Newsletter - Ransom Note Style -->
+        <div class="animate-enter-left" style="animation-delay: 200ms;">
+          <div class="bg-p5-dark p-8 rounded-xl clip-jagged box-shadow-hard">
+            <h3 class="font-anton text-3xl text-white mb-6 text-center">JOIN THE CALLING CARD</h3>
+            
+            <!-- Ransom-note style header with randomized rotation -->
+            <div class="font-marker text-2xl md:text-3xl text-center mb-8 tracking-wider">
+              <span class="word-1 inline-block text-p5-red">Join</span>
+              <span class="word-2 inline-block text-white">The</span>
+              <span class="word-3 inline-block text-p5-red">Calling</span>
+              <span class="word-4 inline-block text-white">Card</span>
+            </div>
+            
+            <p class="font-oswald text-gray-400 text-center mb-6">
+              Get tournament updates, meta shifts, and exclusive drops.
+            </p>
+            
+            <form class="space-y-4" onsubmit="event.preventDefault(); alert('Thanks for joining the Calling Card!');">
+              <div class="relative">
+                <input 
+                  type="email" 
+                  placeholder="EMAIL ADDRESS" 
+                  required
+                  class="w-full bg-p5-black border-2 border-white/20 focus:border-p5-red px-6 py-4 font-oswald text-white placeholder-gray-500 uppercase tracking-wider clip-jagged transition-colors"
+                  aria-label="Email address for newsletter"
+                >
+                <div class="absolute inset-0 bg-gradient-to-r from-p5-red/10 to-transparent opacity-0 pointer-events-none" aria-hidden="true"></div>
+              </div>
+              <button 
+                type="submit"
+                class="w-full clip-slant-right bg-p5-red text-white font-anton py-4 box-shadow-hard transition-all duration-200 hover:bg-white hover:text-p5-red hover:scale-[1.02]"
+              >
+                SUBSCRIBE
+                <iconify-icon icon="solar:arrow-right-linear" class="inline-block ml-2 text-xl"></iconify-icon>
+              </button>
+            </form>
+            
+            <p class="font-oswald text-xs text-gray-500 text-center mt-4">
+              No spam. Unsubscribe anytime. Your data stays in the Metaverse.
+            </p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Bottom Links -->
+      <div class="border-t border-white/10 pt-8">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+          <div class="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-500 font-oswald">
+            <a href="#" class="hover:text-p5-red transition-colors">Privacy</a>
+            <a href="#" class="hover:text-p5-red transition-colors">Terms</a>
+            <a href="#" class="hover:text-p5-red transition-colors">Support</a>
+            <a href="#" class="hover:text-p5-red transition-colors">API Docs</a>
+          </div>
+          
+          <div class="font-marker text-sm text-gray-500">
+            © 2024 BnB TOURNAMENT. MADE WITH <span class="text-p5-red">♥</span> BY PHANTOM THIEVES.
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Decorative footer elements -->
+    <div class="absolute bottom-0 left-10 w-16 h-16 border-2 border-p5-red/30 clip-starburst rotate-6" aria-hidden="true"></div>
+    <div class="absolute bottom-0 right-10 w-12 h-12 bg-p5-red/20 clip-jagged -rotate-12" aria-hidden="true"></div>
+  </footer>
+  
+  <!-- ===========================================
+       JAVASCRIPT - INTERACTIONS
+       =========================================== -->
+  <script>
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        const target = document.querySelector(targetId);
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+    
+    // Intersection Observer for scroll animations
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate-enter-left');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+    
+    // Observe feature cards and other elements
+    document.querySelectorAll('[class*="group"]').forEach(el => {
+      if (!el.classList.contains('animate-enter-left')) {
+        observer.observe(el);
+      }
+    });
+    
+    // Navbar scroll effect
+    let lastScroll = 0;
+    const nav = document.querySelector('nav');
+    
+    window.addEventListener('scroll', () => {
+      const currentScroll = window.pageYOffset;
+      
+      if (currentScroll > 100) {
+        nav.classList.add('bg-p5-black/95', 'backdrop-blur-sm');
+      } else {
+        nav.classList.remove('bg-p5-black/95', 'backdrop-blur-sm');
+      }
+      
+      lastScroll = currentScroll;
+    });
+    
+    // Parallax effect for hero decorative elements
+    const heroSection = document.querySelector('section[aria-labelledby="hero-heading"]');
+    const decorativeElements = heroSection.querySelectorAll('[aria-hidden="true"]:not(svg)');
+    
+    window.addEventListener('scroll', () => {
+      const scrolled = window.pageYOffset;
+      const rate = scrolled * -0.3;
+      
+      decorativeElements.forEach((el, index) => {
+        const speed = 0.1 + (index * 0.05);
+        el.style.transform = `translateY(${scrolled * speed}px) ${el.style.transform || ''}`;
+      });
+    });
+    
+    // Button click ripple effect
+    document.querySelectorAll('button, a[class*="clip-"]').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        const rect = this.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        const ripple = document.createElement('span');
+        ripple.style.cssText = `
+          position: absolute;
+          width: 20px;
+          height: 20px;
+          background: rgba(255,255,255,0.3);
+          border-radius: 50%;
+          transform: translate(-50%, -50%) scale(0);
+          animation: ripple 0.6s ease-out;
+          pointer-events: none;
+          left: ${x}px;
+          top: ${y}px;
+          z-index: 1000;
+        `;
+        
+        this.style.position = 'relative';
+        this.style.overflow = 'hidden';
+        this.appendChild(ripple);
+        
+        setTimeout(() => ripple.remove(), 600);
+      });
+    });
+    
+    // Add ripple keyframes
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes ripple {
+        to { transform: translate(-50%, -50%) scale(20); opacity: 0; }
+      }
+    `;
+    document.head.appendChild(style);
+    
+    // Mouse move parallax for hero card
+    const heroCard = document.querySelector('.rotate-3');
+    if (heroCard) {
+      document.addEventListener('mousemove', (e) => {
+        const x = (e.clientX / window.innerWidth - 0.5) * 10;
+        const y = (e.clientY / window.innerHeight - 0.5) * 10;
+        heroCard.style.transform = `rotate(3deg) translateX(${x}px) translateY(${y}px)`;
+      });
+    }
+    
+    // Feature card tilt effect
+    document.querySelectorAll('#features article').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotateX = (y - centerY) / 20;
+        const rotateY = (centerX - x) / 20;
+        
+        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px) rotate(-1deg)`;
+      });
+      
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+      });
+    });
+    
+    // Mockup list item hover enhancement
+    document.querySelectorAll('.group.-skew-x-3').forEach(item => {
+      item.addEventListener('mouseenter', () => {
+        item.style.zIndex = '10';
+      });
+      item.addEventListener('mouseleave', () => {
+        item.style.zIndex = '';
+      });
+    });
+  </script>
+</body>
+</html>
