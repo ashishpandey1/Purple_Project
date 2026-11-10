@@ -26,7 +26,7 @@ export function Layout() {
                   <stop offset="1" stopColor="var(--neon-red)"></stop>
                 </linearGradient>
               </defs>
-              <path d="M16 3.6 27.4 10v12L16 28.4 4.6 22V10z" stroke="url(#brand-mark-grad)" strokeWidth="1.8"></path>
+              <path d="M16 3.6 27.4 10v12L16 28.4 4.6 22V10z" stroke="url(#brand-mark-grad)" strokeWidth="1.2"></path>
               <path d="M16 9.4 21.6 22.6h-3.1l-1.1-2.8h-2.8l-1.1 2.8H10.4z" fill="url(#brand-mark-grad)"></path>
               <path d="M14.9 17h2.2l-1.1-2.8z" fill="var(--abyss)"></path>
             </svg>
@@ -109,7 +109,7 @@ export function Layout() {
                     <stop offset="1" stopColor="var(--neon-red)"></stop>
                   </linearGradient>
                 </defs>
-                <path d="M16 3.6 27.4 10v12L16 28.4 4.6 22V10z" stroke="url(#brand-mark-grad-footer)" strokeWidth="1.8"></path>
+                <path d="M16 3.6 27.4 10v12L16 28.4 4.6 22V10z" stroke="url(#brand-mark-grad-footer)" strokeWidth="1.2"></path>
                 <path d="M16 9.4 21.6 22.6h-3.1l-1.1-2.8h-2.8l-1.1 2.8H10.4z" fill="url(#brand-mark-grad-footer)"></path>
                 <path d="M14.9 17h2.2l-1.1-2.8z" fill="var(--abyss)"></path>
               </svg>
