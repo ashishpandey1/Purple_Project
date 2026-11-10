@@ -210,7 +210,7 @@ export function BookingConfirm() {
                         : ''
                     }`}
                   >
-                    <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-glass border border-glass-border text-neon">
+                    <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-glass border border-glass-border text-neon">
                       {mode.icon}
                     </span>
                     <span className="label-caps text-xs font-semibold">{mode.label}</span>

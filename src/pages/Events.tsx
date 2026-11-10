@@ -118,7 +118,7 @@ export function Events() {
 
       {events.length === 0 ? (
         <div className="arena-card glass-neon p-12 text-center animate-fade-in">
-          <div className="mx-auto h-16 w-16 rounded-2xl flex-center mb-4" style={{ background: 'linear-gradient(135deg, var(--neon) 0%, var(--violet) 100%)', boxShadow: 'var(--glow-neon)' }}>
+          <div className="mx-auto h-12 w-12 rounded-2xl flex-center mb-4" style={{ background: 'linear-gradient(135deg, var(--neon) 0%, var(--violet) 100%)', boxShadow: 'var(--glow-neon)' }}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-8 w-8 text-abyss">
               <rect width="18" height="18" x="3" y="4" rx="2" />
               <path d="M16 2v4" />

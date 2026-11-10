@@ -129,7 +129,7 @@ export function EventDetail() {
 
             <div className="mt-6 grid gap-4 sm:grid-cols-2">
               <div className="flex items-center gap-3 p-4 rounded-2xl border border-glass-border bg-surface/50">
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-glass border border-glass-border text-neon">
+                <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-glass border border-glass-border text-neon">
                   <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <rect width="18" height="18" x="3" y="4" rx="2" />
                     <path d="M16 2v4" />
@@ -145,7 +145,7 @@ export function EventDetail() {
 
               {event.venue && (
                 <div className="flex items-center gap-3 p-4 rounded-2xl border border-glass-border bg-surface/50">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-glass border border-glass-border text-neon">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-glass border border-glass-border text-neon">
                     <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
                       <circle cx="12" cy="10" r="3" />
@@ -159,7 +159,7 @@ export function EventDetail() {
               )}
 
               <div className="flex items-center gap-3 p-4 rounded-2xl border border-glass-border bg-surface/50">
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-glass border border-glass-border text-neon">
+                <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-glass border border-glass-border text-neon">
                   <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
                     <circle cx="12" cy="10" r="3" />
@@ -195,14 +195,14 @@ export function EventDetail() {
                 <div className="flex items-center gap-3">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="btn-ghost-arena h-10 w-10"
+                    className="btn-ghost-arena h-8 w-8"
                   >
                     −
                   </button>
                   <span className="font-display text-2xl font-black text-foreground min-w-[3ch] text-center">{quantity}</span>
                   <button
                     onClick={() => setQuantity(Math.min(10, quantity + 1))}
-                    className="btn-ghost-arena h-10 w-10"
+                    className="btn-ghost-arena h-8 w-8"
                   >
                     +
                   </button>

@@ -221,7 +221,7 @@ function FeatureCard({ feature, index }: { feature: FeatureItem; index: number }
     >
       <div className="p-5 h-full flex flex-col">
         <div
-          className="flex h-12 w-12 items-center justify-center rounded-xl mb-4"
+          className="flex h-8 w-8 items-center justify-center rounded-xl mb-4"
           style={{
             background: `linear-gradient(135deg, var(--${feature.accent}) 0%, var(--${feature.accent}-dim) 100%)`,
             boxShadow: `0 0 24px var(--${feature.accent})40`
